@@ -1,0 +1,33 @@
+# common properties
+server:
+  servlet:
+    contextPath: /
+  
+info:
+  app:
+    name: places-service
+    version: v0.1
+    description: places-service
+    
+foursquareVenuesUrl: https://api.foursquare.com/v2/venues/explore?client_id=${client.id}&client_secret=${client.secret}&v=${client.v}
+
+client:
+  id: UVNFCLCZZ4SQE0GVDKSMROBQX2D0SYQGMT20HHTYDYBX4NLI
+  secret: SITG0EPBCRDRRBWHSXL2IHFTQRJDP2EDJT43N1X2OCLM4BEN
+  v: 20180323
+
+hystrix:
+  command:
+    foursquareService:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+            interruptOnTimeout: true
+      fallback:
+        enabled: true
+      circuitBreaker:
+        enabled: true
+        sleepWindowInMilliseconds: 30000
+        requestVolumeThreshold: 5
+        errorThresholdPercentage: 50
