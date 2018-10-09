@@ -25,8 +25,9 @@ public class PlacesController {
 	private FoursquareService fourSquareService;
     
 	/**
-     * Get places request for provided query parameter
-     * @return Callable<VenueRequestOutputResponse> List of venues
+     * Get venues recommendation according to place 
+     * 
+     * @return Callable<VenueRequestOutputResponse> Response with list of venues
      */
     @RequestMapping(value = "/places", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)

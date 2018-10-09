@@ -1,7 +1,11 @@
 package places.exception;
 
 public class BaseException extends RuntimeException {
-    private ErrorData errorData;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4847563698962734747L;
+	private ErrorData errorData;
 
     public BaseException() {
         //default constructor
