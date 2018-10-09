@@ -1,14 +1,23 @@
 package places.service;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
@@ -16,6 +25,7 @@ import places.data.VenueRecommendationResponse;
 import places.exception.ErrorData;
 import places.exception.FoursquareFailedException;
 import places.exception.ResourceAccessException;
+import org.apache.commons.io.IOUtils;
 
 @Service
 @DefaultProperties(defaultFallback = "fallback")
@@ -28,6 +38,29 @@ public class FoursquareServiceImpl implements FoursquareService {
 	@HystrixCommand(commandKey = "foursquareService", ignoreExceptions = { FoursquareFailedException.class })
 	public Optional<VenueRecommendationResponse> findVenuesRecommendation(String name) {
 		RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setErrorHandler(new ResponseErrorHandler() {
+            @Override
+            public boolean hasError(ClientHttpResponse response) throws IOException {
+                return (!HttpStatus.OK.equals(response.getStatusCode()));
+            }
+            @Override
+            public void handleError(ClientHttpResponse response) throws IOException {
+                try {
+                    InputStream body = response.getBody();
+                    StringWriter writer = new StringWriter();
+                    IOUtils.copy(body, writer, StandardCharsets.UTF_8);
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    String content = writer.toString();
+                    TypeReference<Map<String,ErrorData>> typeRef
+                            = new TypeReference<Map<String, ErrorData>>() {};
+                    Map<String,ErrorData> map = objectMapper.readValue(content, typeRef);
+                    ErrorData errorData = map.get("error");
+                    throw new FoursquareFailedException(errorData);
+                } catch (IOException ioe) {
+                    throw new FoursquareFailedException(new ErrorData(Long.valueOf(response.getRawStatusCode()), null, "Could not get venues" ));
+                }
+            }
+        });
 		ResponseEntity<VenueRecommendationResponse> itemResponseEntity = restTemplate.getForEntity(
 				requestURL, VenueRecommendationResponse.class, name);
 		if (itemResponseEntity.getStatusCode() == HttpStatus.OK) {
@@ -54,4 +87,5 @@ public class FoursquareServiceImpl implements FoursquareService {
 		this.requestURL = requestURL;
 	}
 
+	
 }

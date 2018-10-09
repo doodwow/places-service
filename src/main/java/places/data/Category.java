@@ -1,5 +1,10 @@
 package places.data;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,23 +12,33 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class Category {
-	private Integer id;
+	private String id;
 	private String name;
 	private String pluralName;
 	private String shortName;
 	private Icon icon;
 	private Boolean primary;
+	
+	private Map<String, Object> metadata = new HashMap<>();
 
-    @JsonProperty("Id")
-	public Integer getId() {
+	@JsonAnyGetter
+	public Map<String, Object> any() {
+		return metadata;
+	}
+
+	@JsonAnySetter
+	public void set(String name, Object value) {
+		this.metadata.put(name, value);
+	}
+
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-    @JsonProperty("Name")
 	public String getName() {
 		return name;
 	}
@@ -32,7 +47,6 @@ public final class Category {
 		this.name = name;
 	}
 
-    @JsonProperty("PluralName")
 	public String getPluralName() {
 		return pluralName;
 	}
@@ -41,7 +55,6 @@ public final class Category {
 		this.pluralName = pluralName;
 	}
 
-    @JsonProperty("ShortName")
 	public String getShortName() {
 		return shortName;
 	}
@@ -50,7 +63,6 @@ public final class Category {
 		this.shortName = shortName;
 	}
 
-    @JsonProperty("Icon")
 	public Icon getIcon() {
 		return icon;
 	}
@@ -59,7 +71,6 @@ public final class Category {
 		this.icon = icon;
 	}
 
-    @JsonProperty("Primary")
 	public Boolean isPrimary() {
 		return primary;
 	}

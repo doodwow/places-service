@@ -13,34 +13,31 @@ import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.Optional;
 
-import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 import places.data.VenueRecommendationResponse;
+import places.exception.FoursquareFailedException;
 import places.service.FoursquareServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
-@SpringBootTest
-@SpringBootConfiguration
 public class FoursquareServiceTest {
 	
 	@InjectMocks
 	@Spy
 	private FoursquareServiceImpl service;
-	
-	@ClassRule
-	public static WireMockClassRule wireMockRule = new WireMockClassRule(8081);
+
+	@Rule
+	public WireMockRule wireMockRule = new WireMockRule(8081);
 	
 	@Test
-	public final void testVenuesExplore() {
+	public final void findVenuesRecommendationTest() {
 		String url = "http://localhost:8081";
 		stubFor(get(urlEqualTo("/"))
 	                .withHeader("Accept", equalTo("application/json, application/*+json"))
@@ -53,9 +50,37 @@ public class FoursquareServiceTest {
 		VenueRecommendationResponse result = res.isPresent() ? res.get() : new VenueRecommendationResponse();
 		assertEquals(new Integer(230), result.getResponse().getTotalResults());
 		assertEquals(new Integer(200), result.getMeta().getCode());
-//		assertEquals(".png", result.getResponse().getGroups().get(0).getItems().get(0).getVenue().getCategories().get(0).getIcon().getSuffix());
-		assertEquals(1, result.getResponse().getGroups().size());
+		assertEquals("globalInteractionReason", result.getResponse().getGroups().get(0).getItems().get(0).getReasons().getItems().get(0).getReasonName());
+		assertEquals(new Double(-73.98829148466851), result.getResponse().getGroups().get(0).getItems().get(0).getVenue().getLocation().getLabeledLatLngs().get(0).getLng());
+		assertEquals("179 E Houston St (btwn Allen & Orchard St)", result.getResponse().getGroups().get(0).getItems().get(0).getVenue().getLocation().getFormattedAddress().get(0));
+		assertEquals(".png", result.getResponse().getGroups().get(0).getItems().get(0).getVenue().getCategories().get(0).getIcon().getSuffix());
+		
 	}
+	
+	@Test(expected=FoursquareFailedException.class)
+	public final void findVenuesRecommendationTestFailure404() {
+		String url = "http://localhost:8081";
+		stubFor(get(urlEqualTo("/"))
+	                .withHeader("Accept", equalTo("application/json, application/*+json"))
+	                .willReturn(aResponse()
+	                    .withStatus(404)
+	                    .withHeader("Content-Type", "application/json")
+	                    .withBody(failJson())));
+		service.setRequestURL(url);
+		service.findVenuesRecommendation("london");
+		
+	}
+
+    private byte[] failJson() {
+        String res = "{\n" +
+                "    \"error\": {\n" +
+                "        \"statusCode\": 404,\n" +
+                "        \"code\": \"EES_API_ERR_004\",\n" +
+                "        \"message\": \"Entitlement not found\"\n" +
+                "    }\n" +
+                "}";
+        return res.getBytes();
+    }
 
 	private byte[] successJson() {
 

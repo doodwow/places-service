@@ -1,5 +1,10 @@
 package places.data;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,8 +15,19 @@ public final class GeoCodeGeoPt {
 
 	public Double lat;
 	public Double lng;
+	
+	private Map<String, Object> metadata = new HashMap<>();
 
-    @JsonProperty("Lng")
+	@JsonAnyGetter
+	public Map<String, Object> any() {
+		return metadata;
+	}
+
+	@JsonAnySetter
+	public void set(String name, Object value) {
+		this.metadata.put(name, value);
+	}
+
 	public Double getLng() {
 		return lng;
 	}
@@ -20,7 +36,6 @@ public final class GeoCodeGeoPt {
 		this.lng = lng;
 	}
 
-    @JsonProperty("Lat")
 	public Double getLat() {
 		return lat;
 	}

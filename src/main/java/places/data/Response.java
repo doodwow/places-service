@@ -1,7 +1,11 @@
 package places.data;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -18,6 +22,18 @@ public final class Response {
 	private Warning warning;
 	private SuggestedBounds suggestedBounds;
 	private List<Group> groups;
+	
+	private Map<String, Object> metadata = new HashMap<>();
+
+	@JsonAnyGetter
+	public Map<String, Object> any() {
+		return metadata;
+	}
+
+	@JsonAnySetter
+	public void set(String name, Object value) {
+		this.metadata.put(name, value);
+	}
 
 	public Response() {
 		// DEFAULT CONSTRUCTOR NEEDED FOR JACKSON UNMARSHALLING

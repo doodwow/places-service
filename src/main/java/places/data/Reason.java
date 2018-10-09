@@ -1,11 +1,14 @@
 package places.data;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
@@ -13,8 +16,19 @@ public final class Reason {
 
     private Integer count;
     private List<ReasonItem> items;
+	
+	private Map<String, Object> metadata = new HashMap<>();
 
-	@JsonProperty("Count")
+	@JsonAnyGetter
+	public Map<String, Object> any() {
+		return metadata;
+	}
+
+	@JsonAnySetter
+	public void set(String name, Object value) {
+		this.metadata.put(name, value);
+	}
+
     public Integer getCount() {
 		return count;
 	}
@@ -23,7 +37,6 @@ public final class Reason {
 		this.count = count;
 	}
 
-	@JsonProperty("Items")
 	public List<ReasonItem> getItems() {
 		return items;
 	}

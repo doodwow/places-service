@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
@@ -23,7 +22,6 @@ public final class Venue {
     
     private Map<String, Object> metadata = new HashMap<>();
 
-    @JsonProperty("Id")
     public String getId() {
         return id;
     }
@@ -32,7 +30,6 @@ public final class Venue {
         this.id = venueRequestExternalIdentifier;
     }
 
-    @JsonProperty("Name")
     public String getName() {
         return name;
     }
@@ -41,7 +38,6 @@ public final class Venue {
         this.name = name;
     }
 
-    @JsonProperty("Location")
     public Location getLocation() {
         return location;
     }
@@ -50,7 +46,6 @@ public final class Venue {
         this.location = location;
     }
 
-    @JsonProperty("Categories")
     public List<Category> getCategories() {
 		return categories;
 	}
@@ -59,7 +54,6 @@ public final class Venue {
 		this.categories = categories;
 	}
 
-    @JsonProperty("VenuePage")
     public VenuePage getVenuePage() {
 		return venuePage;
 	}

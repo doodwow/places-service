@@ -1,10 +1,13 @@
 package places.data;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -21,8 +24,19 @@ public final class Location {
 	private String country;
 	private List<LabeledLatLng> labeledLatLngs;
 	private List<String> formattedAddress;
+	
+	private Map<String, Object> metadata = new HashMap<>();
 
-    @JsonProperty("Lat")
+	@JsonAnyGetter
+	public Map<String, Object> any() {
+		return metadata;
+	}
+
+	@JsonAnySetter
+	public void set(String name, Object value) {
+		this.metadata.put(name, value);
+	}
+
 	public Double getLat() {
 		return lat;
 	}
@@ -31,7 +45,6 @@ public final class Location {
 		this.lat = lat;
 	}
 
-    @JsonProperty("Lng")
 	public Double getLng() {
 		return lng;
 	}
@@ -40,7 +53,6 @@ public final class Location {
 		this.lng = lng;
 	}
 
-    @JsonProperty("Distance")
 	public Integer getDistance() {
 		return distance;
 	}
@@ -49,7 +61,6 @@ public final class Location {
 		this.distance = distance;
 	}
 
-    @JsonProperty("Address")
 	public String getAddress() {
 		return address;
 	}
@@ -58,7 +69,6 @@ public final class Location {
 		this.address = address;
 	}
 
-    @JsonProperty("CrossStreet")
 	public String getCrossStreet() {
 		return crossStreet;
 	}
@@ -67,7 +77,6 @@ public final class Location {
 		this.crossStreet = crossStreet;
 	}
 
-    @JsonProperty("PostalCode")
 	public String getPostalCode() {
 		return postalCode;
 	}
@@ -76,7 +85,6 @@ public final class Location {
 		this.postalCode = postalCode;
 	}
 
-    @JsonProperty("Cc")
 	public String getCc() {
 		return cc;
 	}
@@ -85,7 +93,6 @@ public final class Location {
 		this.cc = cc;
 	}
 
-    @JsonProperty("City")
 	public String getCity() {
 		return city;
 	}
@@ -94,7 +101,6 @@ public final class Location {
 		this.city = city;
 	}
 
-    @JsonProperty("State")
 	public String getState() {
 		return state;
 	}
@@ -103,7 +109,6 @@ public final class Location {
 		this.state = state;
 	}
 
-    @JsonProperty("Country")
 	public String getCountry() {
 		return country;
 	}
@@ -112,7 +117,6 @@ public final class Location {
 		this.country = country;
 	}
 
-    @JsonProperty("LabeledLatLngs")
 	public List<LabeledLatLng> getLabeledLatLngs() {
 		return labeledLatLngs;
 	}
@@ -121,7 +125,6 @@ public final class Location {
 		this.labeledLatLngs = labeledLatLngs;
 	}
 
-    @JsonProperty("FormattedAddress")
 	public List<String> getFormattedAddress() {
 		return formattedAddress;
 	}
