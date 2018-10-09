@@ -11,7 +11,7 @@ public final class Category {
 	private String name;
 	private String pluralName;
 	private String shortName;
-	private ReasonItem icon;
+	private Icon icon;
 	private Boolean primary;
 
     @JsonProperty("Id")
@@ -51,11 +51,11 @@ public final class Category {
 	}
 
     @JsonProperty("Icon")
-	public ReasonItem getIcon() {
+	public Icon getIcon() {
 		return icon;
 	}
 
-	public void setIcon(ReasonItem icon) {
+	public void setIcon(Icon icon) {
 		this.icon = icon;
 	}
 

@@ -29,7 +29,7 @@ public class FoursquareServiceImpl implements FoursquareService {
 	public Optional<VenueRecommendationResponse> findVenuesRecommendation(String name) {
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<VenueRecommendationResponse> itemResponseEntity = restTemplate.getForEntity(
-				requestURL + "&near={name}", VenueRecommendationResponse.class, name);
+				requestURL, VenueRecommendationResponse.class, name);
 		if (itemResponseEntity.getStatusCode() == HttpStatus.OK) {
 			return Optional.ofNullable(itemResponseEntity.getBody());
 		} else {
@@ -37,7 +37,7 @@ public class FoursquareServiceImpl implements FoursquareService {
 		}
 	}
 
-	public void fallback(Throwable ex) {
+	public Optional<VenueRecommendationResponse> fallback(Throwable ex) {
 		if (ex instanceof ExecutionException) {
 			Throwable cause = ex.getCause();
 			if (cause instanceof FoursquareFailedException) {

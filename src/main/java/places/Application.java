@@ -5,12 +5,12 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-//import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.context.annotation.Configuration;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-//@EnableCircuitBreaker
+@EnableCircuitBreaker
 @Configuration
 @SpringBootApplication
 @EnableSwagger2

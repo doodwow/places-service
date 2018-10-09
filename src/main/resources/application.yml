@@ -9,7 +9,7 @@ info:
     version: v0.1
     description: places-service
     
-foursquareVenuesUrl: https://api.foursquare.com/v2/venues/explore?client_id=${client.id}&client_secret=${client.secret}&v=${client.v}
+foursquareVenuesUrl: https://api.foursquare.com/v2/venues/explore?client_id=${client.id}&client_secret=${client.secret}&v=${client.v}&near={name}
 
 client:
   id: UVNFCLCZZ4SQE0GVDKSMROBQX2D0SYQGMT20HHTYDYBX4NLI

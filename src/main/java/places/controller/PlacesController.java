@@ -36,7 +36,7 @@ public class PlacesController {
         return () -> {
             Optional<VenueRecommendationResponse> venueRequestData = fourSquareService.findVenuesRecommendation(name);
             
-            return venueRequestData.isPresent() ? venueRequestData.get() : new VenueRecommendationResponse();
+            return venueRequestData.isPresent() ? venueRequestData.get() : null;
         };
     }
     

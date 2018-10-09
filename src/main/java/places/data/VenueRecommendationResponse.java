@@ -12,83 +12,26 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class VenueRecommendationResponse {
 
-	private String suggestedRadius;
-	private String headerLocation;
-	private String headerFullLocation;
-	private String headerLocationGranularity;
-	private String totalResults;
-	private String state;
-	private Warning warning;
-	private SuggestedBounds suggestedBounds;
-
+	private Meta meta;
+	private Response response;
+	
 	private Map<String, Object> metadata = new HashMap<>();
 
-	public VenueRecommendationResponse() {
-		// DEFAULT CONSTRUCTOR NEEDED FOR JACKSON UNMARSHALLING
+
+	public Meta getMeta() {
+		return meta;
 	}
 
-	public String getSuggestedRadius() {
-		return suggestedRadius;
+	public void setMeta(Meta meta) {
+		this.meta = meta;
 	}
 
-	public void setSuggestedRadius(String suggestedRadius) {
-		this.suggestedRadius = suggestedRadius;
+	public Response getResponse() {
+		return response;
 	}
 
-	public String getHeaderLocation() {
-		return headerLocation;
-	}
-
-	public void setHeaderLocation(String headerLocation) {
-		this.headerLocation = headerLocation;
-	}
-
-	public String getHeaderFullLocation() {
-		return headerFullLocation;
-	}
-
-	public void setHeaderFullLocation(String headerFullLocation) {
-		this.headerFullLocation = headerFullLocation;
-	}
-
-	public String getHeaderLocationGranularity() {
-		return headerLocationGranularity;
-	}
-
-	public void setHeaderLocationGranularity(String headerLocationGranularity) {
-		this.headerLocationGranularity = headerLocationGranularity;
-	}
-
-	public String getTotalResults() {
-		return totalResults;
-	}
-
-	public void setTotalResults(String totalResults) {
-		this.totalResults = totalResults;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public Warning getWarning() {
-		return warning;
-	}
-
-	public void setWarning(Warning warning) {
-		this.warning = warning;
-	}
-
-	public SuggestedBounds getSuggestedBounds() {
-		return suggestedBounds;
-	}
-
-	public void setSuggestedBounds(SuggestedBounds suggestedBounds) {
-		this.suggestedBounds = suggestedBounds;
+	public void setResponse(Response response) {
+		this.response = response;
 	}
 
 	@JsonAnyGetter
